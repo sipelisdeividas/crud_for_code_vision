@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class IsAdmin
 {
     /**
-     * Handle an incoming request.
+     *
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

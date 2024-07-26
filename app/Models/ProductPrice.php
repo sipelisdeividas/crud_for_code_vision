@@ -59,13 +59,13 @@ class ProductPrice extends Model
     protected function classifyPrice(float $price): string
     {
         if ($price >= 0 && $price <= 50000) {
-            return 'low';
+            return 'Žema';
         } elseif ($price > 50000 && $price <= 150000) {
-            return 'middle';
+            return 'Vidutinė';
         } elseif ($price > 150000 && $price <= 500000) {
-            return 'high';
+            return 'Aukšta';
         } else {
-            return 'unknown';
+            return 'Labai Aukšta';
         }
     }
 }
