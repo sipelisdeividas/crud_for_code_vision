@@ -10,9 +10,9 @@ class PageController extends Controller
     {
         if (auth()->check())
         {
-            return view('home-page-feed');
+            return view('home.profile');
         } else {
-            return view('home-page');
+            return view('home.welcome');
         }
     }
 }

@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="container py-md-5">
+    <div>
         <div class="row align-items-center">
             <div class="col-lg-7 py-3 py-md-5">
                 <h1 class="display-3">Tutolis Veža</h1>
@@ -45,7 +45,7 @@
                             @enderror
                     </div>
 
-                    <button type="submit" class="py-3 mt-4 btn btn-lg btn-info btn-block">Registruotis</button>
+                    <button title="Registracija Prie Sistemos" data-toggle="tooltip" data-placement="bottom" type="submit" class="py-3 mt-4 btn btn-lg btn-info btn-block">Registruotis</button>
                 </form>
             </div>
         </div>
