@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\ProductServiceInterface;
+use App\Interfaces\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Product;
 use App\Models\User;
@@ -11,14 +12,20 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductService implements ProductServiceInterface
 {
+    protected ProductRepositoryInterface $productRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function createProduct(array $data): void
     {
-
         if (!isset($data['user_id'])) {
             throw new \InvalidArgumentException('Trūksta vartotojo ID.');
         }
 
-        $product = Product::create([
+        $product = $this->productRepository->create([
             'product_name' => strip_tags($data['product_name']),
             'description' => strip_tags($data['description']),
             'mileage' => strip_tags($data['mileage']),
@@ -39,31 +46,22 @@ class ProductService implements ProductServiceInterface
 
     protected function createProductPrice(int $productId, float $price): void
     {
-        $valueClass = $this->classifyPrice($price);
-
         ProductPrice::updateOrCreate([
             'product_id' => $productId,
             'price' => $price,
-            'value_class' => $valueClass,
         ]);
     }
 
-    protected function classifyPrice(float $price): string
+    public function getAllProducts(): Collection
     {
-        if ($price >= 0 && $price <= 50000) {
-            return 'low';
-        } elseif ($price > 50000 && $price <= 150000) {
-            return 'middle';
-        } elseif ($price > 150000 && $price <= 500000) {
-            return 'high';
-        } else {
-            return 'unknown';
-        }
+        return Cache::remember('all_products', now()->addMinutes(1), function () {
+            return $this->productRepository->all();
+        });
     }
 
     public function updateProduct(Product $product, array $data): void
     {
-        $product->update([
+        $this->productRepository->update($product, [
             'product_name' => strip_tags($data['product_name']),
             'description' => strip_tags($data['description']),
             'mileage' => strip_tags($data['mileage']),
@@ -75,20 +73,12 @@ class ProductService implements ProductServiceInterface
         ]);
 
         $this->createProductPrice($product->id, $data['price']);
-
         Cache::forget('all_products');
-    }
-
-    public function getAllProducts(): Collection
-    {
-        return Cache::remember('all_products', now()->addMinutes(1), function () {
-            return Product::all();
-        });
     }
 
     public function deleteProduct(int $id): void
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
+        $this->productRepository->delete($id);
+        Cache::forget('all_products');
     }
 }

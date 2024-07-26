@@ -20,9 +20,9 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         if ($this->authenticationService->login($request->validated())) {
+
             return redirect()->route('login')->with('success', 'Sveiki sugrįžę!');
         }
-
         return redirect()->route('login')->with('failure', 'Neteisingi prisijungimo duomenys.');
     }
 

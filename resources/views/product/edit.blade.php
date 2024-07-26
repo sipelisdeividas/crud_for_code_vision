@@ -1,7 +1,8 @@
-<x-layout>
-    <h1 class="mb-4">Redaguoti Produktą</h1>
-    <div class="container">
-        <form action="{{ route('product.update', $product) }}" method="POST">
+<x-layout docTitle="Produkto '{{$product->product_name}}'' Redagavimas">
+
+    <div class="container container--narrow">
+        <h1 class="mb-4">Redaguoti Produktą</h1>
+        <form action="{{ route('products.update', $product) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -73,7 +74,8 @@
                 @enderror
             </div>
 
-            <button class="btn btn-primary">Atnaujinti Produktą</button>
+            <button title="Produkto Informacijos Atnaujinimas" data-toggle="tooltip" data-placement="bottom" class="btn btn-primary">Atnaujinti</button>
         </form>
     </div>
+
 </x-layout>

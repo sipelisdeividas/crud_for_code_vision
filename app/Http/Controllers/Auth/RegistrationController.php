@@ -19,7 +19,6 @@ class RegistrationController extends Controller
     public function register(RegisterRequest $request): RedirectResponse
     {
         $this->registrationService->registerUser($request->validated());
-
         return redirect()->route('login')->with('success', 'Sėkmingai užsiregistravote!');
     }
 }

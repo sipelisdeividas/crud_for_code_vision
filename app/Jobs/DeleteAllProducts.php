@@ -15,18 +15,13 @@ class DeleteAllProducts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         try {
             Product::query()->delete();
             Cache::foget('all_products');
         } catch (\Exception $e) {
-            Log::error('Error deleting products: ' . $e->getMessage());
+            Log::error('Klaida ištrinant produktus: ' . $e->getMessage());
         }
     }
 }

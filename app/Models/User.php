@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    protected $table = 'users';
-
     protected $fillable = [
         'username',
         'email',
@@ -20,20 +19,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'product_names' => 'array',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'product_names' => 'array',
+    ];
 
-    public function product()
+    /**
+     *
+     *
+     * @return BelongsTo
+     */
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
+    /**
+     *
+     *
+     * @return bool
+     */
     public function getIsAdminAttribute(): bool
     {
         return (int) $this->attributes['is_admin'] === 1;

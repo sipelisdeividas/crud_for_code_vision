@@ -12,7 +12,6 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-
     protected ProductServiceInterface $productService;
 
     public function __construct(ProductServiceInterface $productService)
@@ -20,27 +19,23 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index(): View
-    {
-        $products = $this->productService->getAllProducts();
-        return view('product.index', compact('products'));
-    }
-
     public function showCreateProductForm(): View
     {
         $users = User::all();
-
         return view('product.create', compact('users'));
     }
 
     public function createProduct(ProductRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+        $this->productService->createProduct($validated);
+        return redirect()->route('login')->with('success', 'Produktas sėkmingai sukurtas.');
+    }
 
-         $validated = $request->validated();
-
-         $this->productService->createProduct($validated);
-
-         return redirect()->route('login')->with('success', 'Produktas sėkmingai sukurtas.');
+    public function index(): View
+    {
+        $products = $this->productService->getAllProducts();
+        return view('product.index', compact('products'));
     }
 
     public function showEditProductForm(Product $product): View
@@ -52,16 +47,13 @@ class ProductController extends Controller
     public function updateProduct(ProductRequest $request, Product $product): RedirectResponse
     {
         $validated = $request->validated();
-
         $this->productService->updateProduct($product, $validated);
-
         return redirect()->route('products.index')->with('success', 'Produktas sėkmingai atnaujintas.');
     }
 
     public function deleteProduct(int $id): RedirectResponse
     {
         $this->productService->deleteProduct($id);
-
         return redirect()->route('products.index')->with('success', 'Produktas sėkmingai pašalintas.');
     }
 
