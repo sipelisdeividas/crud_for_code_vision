@@ -20,6 +20,6 @@ class RegistrationController extends Controller
     {
         $this->registrationService->registerUser($request->validated());
 
-        return redirect()->route('home')->with('success', 'Sėkmingai užsiregistravote!');
+        return redirect()->route('login')->with('success', 'Sėkmingai užsiregistravote!');
     }
 }

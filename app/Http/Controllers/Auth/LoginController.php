@@ -20,16 +20,16 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         if ($this->authenticationService->login($request->validated())) {
-            return redirect()->route('home')->with('success', 'Sveiki sugrįžę!');
+            return redirect()->route('login')->with('success', 'Sveiki sugrįžę!');
         }
 
-        return redirect()->route('home')->with('failure', 'Neteisingi prisijungimo duomenys.');
+        return redirect()->route('login')->with('failure', 'Neteisingi prisijungimo duomenys.');
     }
 
     public function logout(): RedirectResponse
     {
         Auth::logout();
-        return redirect()->route('home')->with('success', 'Lauksime sugrįžtant!');
+        return redirect()->route('login')->with('success', 'Lauksime sugrįžtant!');
     }
 
 }
