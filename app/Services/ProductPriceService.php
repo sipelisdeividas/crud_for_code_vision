@@ -22,6 +22,7 @@ class ProductPriceService implements ProductPriceServiceInterface
             ],
             [
                 'price' => $price,
+
                 'value_class' => $valueClass,
             ]
         );
