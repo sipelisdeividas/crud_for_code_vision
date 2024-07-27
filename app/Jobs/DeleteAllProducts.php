@@ -17,10 +17,15 @@ class DeleteAllProducts implements ShouldQueue
 
     public function handle(): void
     {
-        try {
+        try
+        {
             Product::query()->delete();
+
             Cache::foget('all_products');
-        } catch (\Exception $e) {
+        }
+
+        catch (\Exception $e)
+        {
             Log::error('Klaida ištrinant produktus: ' . $e->getMessage());
         }
     }

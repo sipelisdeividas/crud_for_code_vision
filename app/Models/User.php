@@ -7,21 +7,30 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    protected $fillable = [
+    protected $fillable =
+    [
         'username',
+
         'email',
+
         'password',
+
         'product_names',
     ];
 
-    protected $hidden = [
+    protected $hidden =
+    [
         'password',
+
         'remember_token',
     ];
 
-    protected $casts = [
+    protected $casts =
+    [
         'email_verified_at' => 'datetime',
+
         'password' => 'hashed',
+
         'product_names' => 'array',
     ];
 

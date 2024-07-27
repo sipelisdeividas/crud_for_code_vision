@@ -18,11 +18,11 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated and Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('products')->name('products.')->group(function () {
-    Route::get('/create', [ProductController::class, 'showCreateProductForm'])->name('create.form');
-    Route::post('/', [ProductController::class, 'createProduct'])->name('create');
+    Route::get('/create', [ProductController::class, 'showCreateForm'])->name('create.form');
+    Route::post('/', [ProductController::class, 'create'])->name('create');
     Route::get('/', [ProductController::class, 'index'])->name('index');
-    Route::delete('/{product}', [ProductController::class, 'deleteProduct'])->name('destroy');
+    Route::delete('/{product}', [ProductController::class, 'delete'])->name('destroy');
     Route::delete('/', [ProductController::class, 'deleteAll'])->name('deleteAll');
-    Route::get('/{product}/edit', [ProductController::class, 'showEditProductForm'])->name('edit.form');
-    Route::put('/{product}', [ProductController::class, 'updateProduct'])->name('update');
+    Route::get('/{product}/edit', [ProductController::class, 'showEditForm'])->name('edit.form');
+    Route::put('/{product}', [ProductController::class, 'update'])->name('update');
 });

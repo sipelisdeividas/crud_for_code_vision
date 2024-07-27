@@ -2,64 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Interfaces\ProductServiceInterface;
 use App\Jobs\DeleteAllProducts;
 use Illuminate\View\View;
-use App\Http\Requests\ProductRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use App\Models\Product;
 
 class ProductController extends Controller
 {
-    protected ProductServiceInterface $productService;
-
-    public function __construct(ProductServiceInterface $productService)
+    public function __construct(protected ProductServiceInterface $productService)
     {
-        $this->productService = $productService;
     }
 
-    public function showCreateProductForm(): View
+    public function showCreateForm(): View
     {
         $users = User::all();
+
         return view('product.create', compact('users'));
     }
 
-    public function createProduct(ProductRequest $request): RedirectResponse
+    public function create(CreateProductRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $this->productService->createProduct($validated);
+
+        $this->productService->create($validated);
+
         return redirect()->route('login')->with('success', 'Produktas sėkmingai sukurtas.');
     }
 
     public function index(): View
     {
-        $products = $this->productService->getAllProducts();
+        $products = $this->productService->getAll();
+
         return view('product.index', compact('products'));
     }
 
-    public function showEditProductForm(Product $product): View
+    public function showEditForm(Product $product): View
     {
         $users = User::all();
+
         return view('product.edit', compact('product', 'users'));
     }
 
-    public function updateProduct(ProductRequest $request, Product $product): RedirectResponse
+    public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
         $validated = $request->validated();
-        $this->productService->updateProduct($product, $validated);
+
+        $this->productService->update($product, $validated);
+
         return redirect()->route('products.index')->with('success', 'Produktas sėkmingai atnaujintas.');
     }
 
-    public function deleteProduct(int $id): RedirectResponse
+    public function delete(Product $product): RedirectResponse
     {
-        $this->productService->deleteProduct($id);
+        $this->productService->delete($product);
+
         return redirect()->route('products.index')->with('success', 'Produktas sėkmingai pašalintas.');
     }
 
     public function deleteAll(): RedirectResponse
     {
         DeleteAllProducts::dispatch();
+
         return redirect()->route('products.index')->with('success', 'Visi produktai bus pašalinti.');
     }
 }

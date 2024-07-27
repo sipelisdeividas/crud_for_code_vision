@@ -10,25 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    protected AuthenticationServiceInterface $authenticationService;
-
-    public function __construct(AuthenticationServiceInterface $authenticationService)
+    public function __construct(protected AuthenticationServiceInterface $authenticationService)
     {
-        $this->authenticationService = $authenticationService;
     }
 
     public function login(LoginRequest $request): RedirectResponse
     {
-        if ($this->authenticationService->login($request->validated())) {
-
+        if ($this->authenticationService->login($request->validated()))
+        {
             return redirect()->route('login')->with('success', 'Sveiki sugrįžę!');
         }
+
         return redirect()->route('login')->with('failure', 'Neteisingi prisijungimo duomenys.');
     }
 
     public function logout(): RedirectResponse
     {
         Auth::logout();
+
         return redirect()->route('login')->with('success', 'Lauksime sugrįžtant!');
     }
 

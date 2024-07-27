@@ -11,7 +11,10 @@ class PageController extends Controller
         if (auth()->check())
         {
             return view('home.profile');
-        } else {
+        }
+
+        else
+        {
             return view('home.welcome');
         }
     }

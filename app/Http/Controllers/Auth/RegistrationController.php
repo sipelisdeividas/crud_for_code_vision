@@ -9,16 +9,14 @@ use Illuminate\Http\RedirectResponse;
 
 class RegistrationController extends Controller
 {
-    protected RegistrationServiceInterface $registrationService;
-
-    public function __construct(RegistrationServiceInterface $registrationService)
+    public function __construct(protected RegistrationServiceInterface $registrationService)
     {
-        $this->registrationService = $registrationService;
     }
 
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $this->registrationService->registerUser($request->validated());
+        $this->registrationService->register($request->validated());
+
         return redirect()->route('login')->with('success', 'Sėkmingai užsiregistravote!');
     }
 }

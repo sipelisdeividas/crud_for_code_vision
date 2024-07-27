@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface RegistrationServiceInterface
 {
-    public function registerUser(array $data): void;
+    public function register(array $data): void;
 }
