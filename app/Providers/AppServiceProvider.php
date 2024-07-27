@@ -7,8 +7,8 @@ use App\Interfaces\ProductRepositoryInterface;
 use App\Interfaces\ProductServiceInterface;
 use App\Interfaces\RegistrationServiceInterface;
 use App\Interfaces\AuthenticationServiceInterface;
-use App\Models\ProductPrice;
 use App\Repositories\ProductRepository;
+use App\Services\Helpers\PriceClassifier;
 use App\Services\ProductPriceService;
 use App\Services\ProductService;
 use App\Services\RegistrationService;
@@ -28,7 +28,12 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
 
-        $this->app->singleton(ProductPriceServiceInterface::class, ProductPriceService::class);
+        $this->app->singleton(PriceClassifier::class);
+
+        $this->app->singleton(ProductPriceServiceInterface::class, function ($app)
+        {
+            return new ProductPriceService($app->make(PriceClassifier::class));
+        });
     }
 
     public function boot(): void

@@ -39,36 +39,4 @@ class ProductPrice extends Model
     {
         return '$' . number_format($this->price, 2);
     }
-
-    /**
-     *
-     *
-     * @param float $value
-     * @return void
-     */
-    public function setPriceAttribute(float $value): void
-    {
-        $this->attributes['price'] = $value;
-
-        $this->attributes['value_class'] = $this->classifyPrice($value);
-    }
-
-    /**
-     *
-     *
-     * @param float $price
-     * @return string
-     */
-    protected function classifyPrice(float $price): string
-    {
-        if ($price >= 0 && $price <= 50000) {
-            return 'Žema';
-        } elseif ($price > 50000 && $price <= 150000) {
-            return 'Vidutinė';
-        } elseif ($price > 150000 && $price <= 500000) {
-            return 'Aukšta';
-        } else {
-            return 'Labai Aukšta';
-        }
-    }
 }
